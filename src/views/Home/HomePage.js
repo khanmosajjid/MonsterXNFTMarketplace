@@ -1,20 +1,20 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react";
 // Header And Footer
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import OwlCarousel from "react-owl-carousel";
 // jQuery
-import { loadHeroContent } from "../../utils/jquery"
+import { loadHeroContent } from "../../utils/jquery";
 // Components
-import NFTCards from "../../components/Home/NFTCards"
-import { useNavigate } from "react-router-dom"
+import NFTCards from "../../components/Home/NFTCards";
+import { useNavigate } from "react-router-dom";
 import {
   NftServices,
   collectionServices,
   getSections,
   userServices,
-} from "../../services/supplier"
-import { WalletContext } from "../../Context/WalletConnect"
+} from "../../services/supplier";
+import { WalletContext } from "../../Context/WalletConnect";
 
 function HomePage() {
   const [artists, setArtists] = useState([]);
@@ -27,26 +27,24 @@ function HomePage() {
   const [collectionHeader, setCollectionHeader] = useState({
     title: "",
     description: "",
-  })
-  const { fetchImages } = useContext(WalletContext)
-  const [curations, setCurations] = useState([])
-  const [initial, setInitial] = useState(true)
-  const [section4, setSection4] = useState()
-  const [section1, setSection1] = useState()
+  });
+  const { fetchImages } = useContext(WalletContext);
+  const [curations, setCurations] = useState([]);
+  const [initial, setInitial] = useState(true);
+  const [section4, setSection4] = useState();
+  const [section1, setSection1] = useState();
   const [carousel, setCarousel] = useState([
     {
-      image: "https://www.shutterstock.com/image-vector/pink-red-lips-mouth-tongue-600w-1388484560.jpg",
+      image:
+        "https://www.shutterstock.com/image-vector/pink-red-lips-mouth-tongue-600w-1388484560.jpg",
       link: "",
     },
     {
       image:
         "https://monsterx-bucket.s3.ap-south-1.amazonaws.com/images/7bffd8f1-725f-4341-9ced-e9d5d70694c4",
-      link:
-        "https://monsterx-admin-rho.vercel.app/#",
-      _id
-        :
-        "660d4c79f6d04abe2e537aaf"
-    }
+      link: "https://monsterx-admin-rho.vercel.app/#",
+      _id: "660d4c79f6d04abe2e537aaf",
+    },
   ]);
   const [bottomBanner, setBottomBanner] = useState("");
   const navigate = useNavigate();
@@ -73,16 +71,17 @@ function HomePage() {
 
   const getSectionsData = async () => {
     try {
-      const { section1, section2, section3, section4 } = await getSections()
-      setSection1(section1)
-      const tempNfts = []
+      const { section1, section2, section3, section4 } = await getSections();
+      setSection1(section1);
+      const tempNfts = [];
       for (let i = 0; i < section2?.box?.length; i++) {
+        console.log(section2?.box[i]?.split("/")[5]);
         try {
-          const nftService = new NftServices()
+          const nftService = new NftServices();
           const {
             data: { nft },
-          } = await nftService.getNftById(section2?.box[i]?.split("/")[5])
-          tempNfts.push(nft)
+          } = await nftService.getNftById(section2?.box[i]?.split("/")[5]);
+          tempNfts.push(nft);
         } catch (error) {
           console.log({ error });
         }
@@ -120,8 +119,8 @@ function HomePage() {
     try {
       const {
         data: { artists },
-      } = await userServices.getArtits({ limit: 3 })
-      setArtists(artists)
+      } = await userServices.getArtits({ limit: 3 });
+      setArtists(artists);
     } catch (error) {
       console.log(error);
     }
@@ -131,8 +130,8 @@ function HomePage() {
     try {
       const {
         data: { curations },
-      } = await collectionServices.getAllCollections()
-      setCurations(curations)
+      } = await collectionServices.getAllCollections();
+      setCurations(curations);
     } catch (error) {
       console.log(error);
     }
@@ -143,8 +142,8 @@ function HomePage() {
       const nftService = new NftServices();
       const {
         data: { nfts },
-      } = await nftService.getAllNfts({ limit: 0, skip: 0, searchInput: "" })
-      setNfts(nfts)
+      } = await nftService.getAllNfts({ limit: 0, skip: 0, searchInput: "" });
+      setNfts(nfts);
     } catch (error) {
       console.log(error);
     }
@@ -152,7 +151,7 @@ function HomePage() {
 
   const fetchMedia = async () => {
     const images = await fetchImages();
-    console.log('image', images)
+    console.log("image", images);
     setCarousel(images?.homeAutority);
     setBottomBanner(images?.bottomBaner?.image);
     setInitial(false);
@@ -307,7 +306,7 @@ function HomePage() {
             <OwlCarousel className="hero__inner__blk" {...options}>
               <div
                 className="hero__content__blk md:p-20 p-8 h-full min-h-[500px] md:min-h-[600px] mmd:min-h-[700px]"
-              // style={{ backgroundImage: "url(./assets/img/hero_bg.png" }}
+                // style={{ backgroundImage: "url(./assets/img/hero_bg.png" }}
               >
                 {/* <h1>
                   The First <span>RWA </span> Collection of <span>Wesley</span>
@@ -318,12 +317,11 @@ function HomePage() {
           ) : (
             <OwlCarousel className="hero__inner__blk" {...options}>
               {carousel?.map((item, i) => {
-
                 return (
                   <div
                     key={i}
                     className="hero__content__blk md:p-20 p-8 h-full relative min-h-[500px] md:min-h-[600px] mmd:min-h-[700px]"
-                  // style={{ backgroundImage: item.image }}
+                    // style={{ backgroundImage: item.image }}
                   >
                     <img
                       src={item.image}
@@ -351,11 +349,9 @@ function HomePage() {
         <div className="container">
           <div className="section__title text-center">
             <h3>
-              Inspiring <span>Artist</span> Interviews
+              Inspiring <span>{section1?.title}</span> Interviews
             </h3>
-            <p>
-              Discover art's wisdom in conversations with our brilliant artists
-            </p>
+            <p>{section1?.description}</p>
           </div>
           <div className="row g-4">
             {section1?.box?.map((value, index) => {
@@ -386,7 +382,7 @@ function HomePage() {
               className="common__btn"
               target="_blank"
               rel="noopener noreferrer"
-            // onClick={() => navigate("/dashboard?artist")}
+              // onClick={() => navigate("/dashboard?artist")}
             >
               Discover Artist
             </a>
@@ -407,7 +403,7 @@ function HomePage() {
                 <span>
                   {
                     nftHeader?.title?.split(" ")[
-                    nftHeader?.title?.split(" ").length - 1
+                      nftHeader?.title?.split(" ").length - 1
                     ]
                   }
                 </span>
@@ -496,7 +492,7 @@ function HomePage() {
           </div>
           <div className="row g-4">
             {nfts?.length > 0 &&
-              nfts?.map((nft, index) => {
+              nfts[0]?.data?.map((nft, index) => {
                 if (index < 4) {
                   return (
                     <div
@@ -541,7 +537,7 @@ function HomePage() {
               })}
           </div>
           <div className="appreciate__slide__blk">
-            <NFTCards nfts={nfts?.slice(4)} />
+            <NFTCards nfts={nfts[0]?.data?.slice(4)} />
             <div className="sport__dts__ico">
               <img src="assets/img/Dots.svg" alt="" />
             </div>
@@ -681,9 +677,9 @@ function HomePage() {
         <div className="container">
           <div
             className="newsltter__inner__blk relative overflow-hidden"
-          // style={{
-          //   backgroundImage: "url(../../assets/img/newsletter_thumb.png)",
-          // }}
+            // style={{
+            //   backgroundImage: "url(../../assets/img/newsletter_thumb.png)",
+            // }}
           >
             <img
               src={
